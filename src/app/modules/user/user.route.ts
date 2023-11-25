@@ -13,8 +13,6 @@ router.delete('/:userId', UsersControllers.deleteUser);
 
 router.put('/:userId', UsersControllers.updateUser);
 
-
-
 router.put('/:userId/orders', UsersControllers.addNewOrder);
 
 router.get('/:userId/orders', UsersControllers.getAllOrders);

@@ -61,12 +61,14 @@ const userSchema = new Schema<User, UserModel>({
     type: String,
     required: [true, 'UserName is required'],
     maxlength: [10, 'username can not be more than 10 characters'],
+    unique: true,
   },
 
   password: {
     type: String,
     required: [true, 'Password is required'],
     maxlength: [20, 'Password can not be more than 20 characters'],
+    select: false,
   },
 
   fullName: {
@@ -123,12 +125,6 @@ userSchema.post('save', function (doc, next) {
 
 //creating a custom static method
 userSchema.statics.isUserExists = async function (id: number) {
-  const existingUser = await Users.findOne({ userId: id });
-  return existingUser;
-};
-
-// creating a custom instance method
-userSchema.methods.isUserExists = async function (id: number) {
   const existingUser = await Users.findOne({ userId: id });
   return existingUser;
 };

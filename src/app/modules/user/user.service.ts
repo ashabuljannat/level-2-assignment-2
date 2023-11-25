@@ -2,11 +2,10 @@
 import { Order } from './user.interface';
 import { Users } from './user.model';
 
-
 const createUserIntoDB = async (userData: any) => {
-    if (await Users.isUserExists(userData.userId)) {
-      throw new Error('User already exists!');
-    }
+  if (await Users.isUserExists(userData.userId)) {
+    throw new Error('User already exists!');
+  }
   const result = await Users.create(userData);
   return result;
 };
@@ -15,7 +14,11 @@ const getAllUsersFromDB = async () => {
   const result = await Users.find(
     {},
     { username: 1, fullName: 1, email: 1, age: 1, address: 1 },
-  );
+    // if (!user) {
+    //   console.log('User not found');
+    //   return;
+    // }
+  ).select('-password');
   return result;
 };
 
@@ -29,13 +32,8 @@ const deleteUserFromDB = async (id: string) => {
   return result;
 };
 
-
-
 const updateUserFromDB = async (id: string, updateData: any) => {
-  const result = await Users.updateOne(
-    { userId: id },
-    { $set: updateData }
-  );
+  const result = await Users.updateOne({ userId: id }, { $set: updateData });
   return result;
 };
 

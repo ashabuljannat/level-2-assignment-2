@@ -1,24 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { UserServices } from './user.service';
-import userJoiValidationSchema from './user.validation.joi';
+import userJoiValidationSchema from './user.validation.zod';
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const { user } = req.body;
-    const { error, value: joiParsedData } =
-      userJoiValidationSchema.validate(user);
+    const zodParsedData = userJoiValidationSchema.parse(user);
 
-    console.log(11, error, joiParsedData);
-
-    const result = await UserServices.createUserIntoDB(joiParsedData);
-    if (error) {
-      res.status(500).json({
-        success: false,
-        message: error.message || 'something went wrong',
-        error: error.details,
-      });
-    }
+    const result = await UserServices.createUserIntoDB(zodParsedData);
+    // if (error) {
+    //   res.status(500).json({
+    //     success: false,
+    //     message: error.message || 'something went wrong',
+    //     message2: error.message || 'something went wrong',
+    //     error: error.details,
+    //   });
+    // }
 
     res.status(200).json({
       success: true,
@@ -29,6 +27,7 @@ const createUser = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: err.message || 'something went wrong',
+      message2: err.message || 'something went wrong',
       error: err,
     });
   }

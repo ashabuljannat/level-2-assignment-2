@@ -14,20 +14,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersControllers = void 0;
 const user_service_1 = require("./user.service");
-const user_validation_joi_1 = __importDefault(require("./user.validation.joi"));
+const user_validation_zod_1 = __importDefault(require("./user.validation.zod"));
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { user } = req.body;
-        const { error, value: joiParsedData } = user_validation_joi_1.default.validate(user);
-        console.log(11, error, joiParsedData);
-        const result = yield user_service_1.UserServices.createUserIntoDB(joiParsedData);
-        if (error) {
-            res.status(500).json({
-                success: false,
-                message: error.message || 'something went wrong',
-                error: error.details,
-            });
-        }
+        const zodParsedData = user_validation_zod_1.default.parse(user);
+        const result = yield user_service_1.UserServices.createUserIntoDB(zodParsedData);
+        // if (error) {
+        //   res.status(500).json({
+        //     success: false,
+        //     message: error.message || 'something went wrong',
+        //     message2: error.message || 'something went wrong',
+        //     error: error.details,
+        //   });
+        // }
         res.status(200).json({
             success: true,
             message: 'User is created successfully',
@@ -38,6 +38,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(500).json({
             success: false,
             message: err.message || 'something went wrong',
+            message2: err.message || 'something went wrong',
             error: err,
         });
     }

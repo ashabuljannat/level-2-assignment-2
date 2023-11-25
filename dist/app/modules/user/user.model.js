@@ -64,11 +64,13 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: [true, 'UserName is required'],
         maxlength: [10, 'username can not be more than 10 characters'],
+        unique: true,
     },
     password: {
         type: String,
         required: [true, 'Password is required'],
         maxlength: [20, 'Password can not be more than 20 characters'],
+        select: false,
     },
     fullName: {
         type: userFullNameSchema,
@@ -114,13 +116,6 @@ userSchema.post('save', function (doc, next) {
 });
 //creating a custom static method
 userSchema.statics.isUserExists = function (id) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const existingUser = yield exports.Users.findOne({ userId: id });
-        return existingUser;
-    });
-};
-// creating a custom instance method
-userSchema.methods.isUserExists = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
         const existingUser = yield exports.Users.findOne({ userId: id });
         return existingUser;

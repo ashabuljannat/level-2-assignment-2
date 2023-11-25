@@ -19,7 +19,7 @@ const createUserIntoDB = (userData) => __awaiter(void 0, void 0, void 0, functio
     return result;
 });
 const getAllUsersFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.Users.find({}, { username: 1, fullName: 1, email: 1, age: 1, address: 1 });
+    const result = yield user_model_1.Users.find({}, { username: 1, fullName: 1, email: 1, age: 1, address: 1 }).select('-password');
     return result;
 });
 const getSingleUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
