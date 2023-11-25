@@ -137,11 +137,22 @@ const addNewOrder = async (req: Request, res: Response) => {
     const { orders } = req.body;
     const result = await UserServices.addOrderToDB(userId, orders);
 
-    res.status(200).json({
-      success: true,
-      message: 'Order created successfully!',
-      data: { modifiedCount: result.modifiedCount },
-    });
+    if (result === null) {
+      res.status(500).json({
+        success: false,
+        message: `User id ${userId} not found`,
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: `Order created successfully for User id ${userId} fetched successfully!`,
+        data: { modifiedCount: result.modifiedCount },
+      });
+    }
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -156,11 +167,22 @@ const getAllOrders = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const result = await UserServices.getAllOrdersFromDB(userId);
 
-    res.status(200).json({
-      success: true,
-      message: 'Order fetched successfully!',
-      data: result[0],
-    });
+    if (result === null) {
+      res.status(500).json({
+        success: false,
+        message: `User id ${userId} not found`,
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: `Order of User id ${userId} fetched successfully!`,
+        data: result,
+      });
+    }
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -180,14 +202,24 @@ const getAllOrdersPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const result = await UserServices.getOrdersPriceFromDB(userId);
-    // console.log('control', result);
     const totalCost = calculateTotalCost(result);
 
-    res.status(200).json({
-      success: true,
-      message: 'Total price calculated successfully!',
-      data: { totalPrice: totalCost },
-    });
+    if (result === null) {
+      res.status(500).json({
+        success: false,
+        message: `User id ${userId} not found`,
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: `Total price calculated successfully of Order User id ${userId}`,
+        data: { totalPrice: totalCost },
+      });
+    }
   } catch (err: any) {
     res.status(500).json({
       success: false,

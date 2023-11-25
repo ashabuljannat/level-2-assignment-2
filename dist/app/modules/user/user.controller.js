@@ -144,11 +144,23 @@ const addNewOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { userId } = req.params;
         const { orders } = req.body;
         const result = yield user_service_1.UserServices.addOrderToDB(userId, orders);
-        res.status(200).json({
-            success: true,
-            message: 'Order created successfully!',
-            data: { modifiedCount: result.modifiedCount },
-        });
+        if (result === null) {
+            res.status(500).json({
+                success: false,
+                message: `User id ${userId} not found`,
+                error: {
+                    code: 404,
+                    description: 'User not found!',
+                },
+            });
+        }
+        else {
+            res.status(200).json({
+                success: true,
+                message: `Order created successfully for User id ${userId} fetched successfully!`,
+                data: { modifiedCount: result.modifiedCount },
+            });
+        }
     }
     catch (err) {
         res.status(500).json({
@@ -162,11 +174,23 @@ const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const { userId } = req.params;
         const result = yield user_service_1.UserServices.getAllOrdersFromDB(userId);
-        res.status(200).json({
-            success: true,
-            message: 'Order fetched successfully!',
-            data: result[0],
-        });
+        if (result === null) {
+            res.status(500).json({
+                success: false,
+                message: `User id ${userId} not found`,
+                error: {
+                    code: 404,
+                    description: 'User not found!',
+                },
+            });
+        }
+        else {
+            res.status(200).json({
+                success: true,
+                message: `Order of User id ${userId} fetched successfully!`,
+                data: result,
+            });
+        }
     }
     catch (err) {
         res.status(500).json({
@@ -183,13 +207,24 @@ const getAllOrdersPrice = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         const { userId } = req.params;
         const result = yield user_service_1.UserServices.getOrdersPriceFromDB(userId);
-        // console.log('control', result);
         const totalCost = calculateTotalCost(result);
-        res.status(200).json({
-            success: true,
-            message: 'Total price calculated successfully!',
-            data: { totalPrice: totalCost },
-        });
+        if (result === null) {
+            res.status(500).json({
+                success: false,
+                message: `User id ${userId} not found`,
+                error: {
+                    code: 404,
+                    description: 'User not found!',
+                },
+            });
+        }
+        else {
+            res.status(200).json({
+                success: true,
+                message: `Total price calculated successfully of Order User id ${userId}`,
+                data: { totalPrice: totalCost },
+            });
+        }
     }
     catch (err) {
         res.status(500).json({

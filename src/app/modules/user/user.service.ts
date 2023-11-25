@@ -54,22 +54,32 @@ const updateUserFromDB = async (id: string, updateData: any) => {
 const addOrderToDB = async (id: string, updateData: Order) => {
   const result = await Users.updateOne(
     { userId: id },
+    // { $set: { orders: updateData } },
     { $push: { orders: updateData } },
-    // $set: { orders: [] },
   );
-  return result;
+  
+  if (result.modifiedCount === 1) {
+    return result;
+  } else return null;
 };
 
-const getAllOrdersFromDB = async (id: string) => {
-  const result = await Users.find({ userId: id }, { orders: 1 });
-  return result;
+const getAllOrdersFromDB = async (id: any) => {
+  if (!Users.isUserNotExists(id)) {
+    throw new Error('User not found');
+  }
+  const result = await Users.findOne({ userId: id }, { orders: 1 });
+
+  if (result) {
+    return result;
+  } else return null;
 };
 
 const getOrdersPriceFromDB = async (id: string) => {
-  const result = await Users.find({ userId: id }, { orders: 1 });
+  const result = await Users.findOne({ userId: id }, { orders: 1 });
 
-  // console.log('control',result[0].orders)
-  return result[0].orders;
+  if (result) {
+    return result.orders;
+  } else return null;
 };
 
 export const UserServices = {

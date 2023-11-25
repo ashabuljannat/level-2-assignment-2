@@ -54,17 +54,33 @@ const updateUserFromDB = (id, updateData) => __awaiter(void 0, void 0, void 0, f
     return result;
 });
 const addOrderToDB = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.Users.updateOne({ userId: id }, { $push: { orders: updateData } });
-    return result;
+    const result = yield user_model_1.Users.updateOne({ userId: id }, 
+    // { $set: { orders: updateData } },
+    { $push: { orders: updateData } });
+    if (result.modifiedCount === 1) {
+        return result;
+    }
+    else
+        return null;
 });
 const getAllOrdersFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.Users.find({ userId: id }, { orders: 1 });
-    return result;
+    if (!user_model_1.Users.isUserNotExists(id)) {
+        throw new Error('User not found');
+    }
+    const result = yield user_model_1.Users.findOne({ userId: id }, { orders: 1 });
+    if (result) {
+        return result;
+    }
+    else
+        return null;
 });
 const getOrdersPriceFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.Users.find({ userId: id }, { orders: 1 });
-    // console.log('control',result[0].orders)
-    return result[0].orders;
+    const result = yield user_model_1.Users.findOne({ userId: id }, { orders: 1 });
+    if (result) {
+        return result.orders;
+    }
+    else
+        return null;
 });
 exports.UserServices = {
     createUserIntoDB,
