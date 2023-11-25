@@ -18,8 +18,5 @@ router.put('/:userId/orders', UsersControllers.addNewOrder);
 router.get('/:userId/orders', UsersControllers.getAllOrders);
 
 router.get('/:userId/orders/total-price', UsersControllers.getAllOrdersPrice);
-// router.get('/', (req, res) => {
-//   res.send('hello user ts-node-dev');
-// });
 
 export const UserRoutes = router;

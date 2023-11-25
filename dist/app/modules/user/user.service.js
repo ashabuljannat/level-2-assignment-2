@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
 const user_model_1 = require("./user.model");
@@ -16,10 +27,12 @@ const createUserIntoDB = (userData) => __awaiter(void 0, void 0, void 0, functio
         throw new Error('User already exists!');
     }
     const result = yield user_model_1.Users.create(userData);
-    return result;
+    const _a = result._doc, { password, _id, __v } = _a, userDataWithoutPassword = __rest(_a, ["password", "_id", "__v"]);
+    return userDataWithoutPassword;
 });
 const getAllUsersFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.Users.find({}, { username: 1, fullName: 1, email: 1, age: 1, address: 1 }).select('-password');
+    const result = yield user_model_1.Users.find({}, { username: 1, fullName: 1, email: 1, age: 1, address: 1 });
+    // ).select('-password');
     return result;
 });
 const getSingleUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {

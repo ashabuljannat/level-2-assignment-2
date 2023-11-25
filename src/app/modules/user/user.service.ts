@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Order } from './user.interface';
 import { Users } from './user.model';
@@ -6,8 +8,10 @@ const createUserIntoDB = async (userData: any) => {
   if (await Users.isUserExists(userData.userId)) {
     throw new Error('User already exists!');
   }
-  const result = await Users.create(userData);
-  return result;
+  const result:any = await Users.create(userData);
+  const { password,_id,__v, ...userDataWithoutPassword } = result._doc;
+
+  return userDataWithoutPassword;
 };
 
 const getAllUsersFromDB = async () => {
@@ -18,7 +22,8 @@ const getAllUsersFromDB = async () => {
     //   console.log('User not found');
     //   return;
     // }
-  ).select('-password');
+  )
+  // ).select('-password');
   return result;
 };
 

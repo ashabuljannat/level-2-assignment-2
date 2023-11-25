@@ -15,7 +15,4 @@ router.put('/:userId', user_controller_1.UsersControllers.updateUser);
 router.put('/:userId/orders', user_controller_1.UsersControllers.addNewOrder);
 router.get('/:userId/orders', user_controller_1.UsersControllers.getAllOrders);
 router.get('/:userId/orders/total-price', user_controller_1.UsersControllers.getAllOrdersPrice);
-// router.get('/', (req, res) => {
-//   res.send('hello user ts-node-dev');
-// });
 exports.UserRoutes = router;
