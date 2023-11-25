@@ -1,8 +1,21 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Users = void 0;
-// import bcrypt from 'bcrypt';
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongoose_1 = require("mongoose");
+const config_1 = __importDefault(require("../../config"));
 const userFullNameSchema = new mongoose_1.Schema({
     firstName: {
         type: String,
@@ -87,4 +100,30 @@ const userSchema = new mongoose_1.Schema({
         default: 'active',
     },
 });
+userSchema.pre('save', function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const user = this;
+        user.password = yield bcrypt_1.default.hash(user.password, Number(config_1.default.bcrypt_salt_rounds));
+        next();
+    });
+});
+userSchema.post('save', function (doc, next) {
+    doc.password = '';
+    next();
+});
+//creating a custom static method
+userSchema.statics.isUserExists = function (id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const existingUser = yield exports.Users.findOne({ userId: id });
+        return existingUser;
+    });
+};
+// creating a custom instance method
+userSchema.methods.isUserExists = function (id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const existingUser = yield exports.Users.findOne({ userId: id });
+        return existingUser;
+    });
+};
 exports.Users = (0, mongoose_1.model)('user', userSchema);

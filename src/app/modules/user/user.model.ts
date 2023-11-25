@@ -1,6 +1,6 @@
-// import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
-// import config from '../../config';
+import config from '../../config';
 import {
   Address,
   Order,
@@ -105,4 +105,32 @@ const userSchema = new Schema<User, UserModel>({
     default: 'active',
   },
 });
+
+userSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+userSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
+});
+
+//creating a custom static method
+userSchema.statics.isUserExists = async function (id: number) {
+  const existingUser = await Users.findOne({ userId: id });
+  return existingUser;
+};
+
+// creating a custom instance method
+userSchema.methods.isUserExists = async function (id: number) {
+  const existingUser = await Users.findOne({ userId: id });
+  return existingUser;
+};
+
 export const Users = model<User, UserModel>('user', userSchema);

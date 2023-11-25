@@ -1,10 +1,12 @@
-import { User } from './user.interface';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Order } from './user.interface';
 import { Users } from './user.model';
 
-const createUserIntoDB = async (userData: User) => {
-  //   if (await Student.isUserExists(studentData.id)) {
-  //     throw new Error('User already exists!');
-  //   }
+
+const createUserIntoDB = async (userData: any) => {
+    if (await Users.isUserExists(userData.userId)) {
+      throw new Error('User already exists!');
+    }
   const result = await Users.create(userData);
   return result;
 };
@@ -27,13 +29,35 @@ const deleteUserFromDB = async (id: string) => {
   return result;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, no-unused-vars, @typescript-eslint/no-unused-vars
-const updateUserFromDB = async (id: string, updateData: User) => {
+
+
+const updateUserFromDB = async (id: string, updateData: any) => {
   const result = await Users.updateOne(
     { userId: id },
-    { isActive: 'inactive' },
+    { $set: updateData }
   );
   return result;
+};
+
+const addOrderToDB = async (id: string, updateData: Order) => {
+  const result = await Users.updateOne(
+    { userId: id },
+    { $push: { orders: updateData } },
+    // $set: { orders: [] },
+  );
+  return result;
+};
+
+const getAllOrdersFromDB = async (id: string) => {
+  const result = await Users.find({ userId: id }, { orders: 1 });
+  return result;
+};
+
+const getOrdersPriceFromDB = async (id: string) => {
+  const result = await Users.find({ userId: id }, { orders: 1 });
+
+  // console.log('control',result[0].orders)
+  return result[0].orders;
 };
 
 export const UserServices = {
@@ -42,4 +66,7 @@ export const UserServices = {
   getSingleUserFromDB,
   deleteUserFromDB,
   updateUserFromDB,
+  addOrderToDB,
+  getAllOrdersFromDB,
+  getOrdersPriceFromDB,
 };

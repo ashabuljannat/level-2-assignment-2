@@ -12,9 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
 const user_model_1 = require("./user.model");
 const createUserIntoDB = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    //   if (await Student.isUserExists(studentData.id)) {
-    //     throw new Error('User already exists!');
-    //   }
+    if (yield user_model_1.Users.isUserExists(userData.userId)) {
+        throw new Error('User already exists!');
+    }
     const result = yield user_model_1.Users.create(userData);
     return result;
 });
@@ -30,10 +30,22 @@ const deleteUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () 
     const result = yield user_model_1.Users.deleteOne({ userId: id });
     return result;
 });
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, no-unused-vars, @typescript-eslint/no-unused-vars
 const updateUserFromDB = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.Users.updateOne({ userId: id }, { isActive: 'inactive' });
+    const result = yield user_model_1.Users.updateOne({ userId: id }, { $set: updateData });
     return result;
+});
+const addOrderToDB = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.Users.updateOne({ userId: id }, { $push: { orders: updateData } });
+    return result;
+});
+const getAllOrdersFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.Users.find({ userId: id }, { orders: 1 });
+    return result;
+});
+const getOrdersPriceFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.Users.find({ userId: id }, { orders: 1 });
+    // console.log('control',result[0].orders)
+    return result[0].orders;
 });
 exports.UserServices = {
     createUserIntoDB,
@@ -41,4 +53,7 @@ exports.UserServices = {
     getSingleUserFromDB,
     deleteUserFromDB,
     updateUserFromDB,
+    addOrderToDB,
+    getAllOrdersFromDB,
+    getOrdersPriceFromDB,
 };
