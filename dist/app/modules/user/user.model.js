@@ -121,4 +121,10 @@ userSchema.statics.isUserExists = function (id) {
         return existingUser;
     });
 };
+userSchema.statics.isUserNotExists = function (id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const notExistingUser = yield exports.Users.findOne({ userId: id });
+        return notExistingUser;
+    });
+};
 exports.Users = (0, mongoose_1.model)('user', userSchema);

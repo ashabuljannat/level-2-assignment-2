@@ -8,8 +8,8 @@ const createUserIntoDB = async (userData: any) => {
   if (await Users.isUserExists(userData.userId)) {
     throw new Error('User already exists!');
   }
-  const result:any = await Users.create(userData);
-  const { password,_id,__v, ...userDataWithoutPassword } = result._doc;
+  const result: any = await Users.create(userData);
+  const { password, _id, __v, ...userDataWithoutPassword } = result._doc;
 
   return userDataWithoutPassword;
 };
@@ -22,23 +22,32 @@ const getAllUsersFromDB = async () => {
     //   console.log('User not found');
     //   return;
     // }
-  )
+  );
   // ).select('-password');
   return result;
 };
 
-const getSingleUserFromDB = async (id: string) => {
-  const result = await Users.find({ userId: id });
+const getSingleUserFromDB = async (id: any) => {
+  if (!Users.isUserNotExists(id)) {
+    throw new Error('User not found');
+  }
+  const result = await Users.findOne({ userId: id });
   return result;
 };
 
-const deleteUserFromDB = async (id: string) => {
+const deleteUserFromDB = async (id: any) => {
+  if (!Users.isUserNotExists(id)) {
+    throw new Error('User not found');
+  }
   const result = await Users.deleteOne({ userId: id });
   return result;
 };
 
 const updateUserFromDB = async (id: string, updateData: any) => {
-  const result = await Users.updateOne({ userId: id }, { $set: updateData });
+  const result = await Users.updateOne(
+    { userId: id },
+    { isActive: 'inactive' },
+  );
   return result;
 };
 

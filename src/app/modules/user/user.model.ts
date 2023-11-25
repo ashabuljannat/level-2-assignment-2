@@ -129,4 +129,9 @@ userSchema.statics.isUserExists = async function (id: number) {
   return existingUser;
 };
 
+userSchema.statics.isUserNotExists = async function (id: number) {
+  const notExistingUser = await Users.findOne({ userId: id });
+  return notExistingUser;
+};
+
 export const Users = model<User, UserModel>('user', userSchema);

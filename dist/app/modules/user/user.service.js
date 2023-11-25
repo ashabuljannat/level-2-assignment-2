@@ -36,15 +36,21 @@ const getAllUsersFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getSingleUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.Users.find({ userId: id });
+    if (!user_model_1.Users.isUserNotExists(id)) {
+        throw new Error('User not found');
+    }
+    const result = yield user_model_1.Users.findOne({ userId: id });
     return result;
 });
 const deleteUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!user_model_1.Users.isUserNotExists(id)) {
+        throw new Error('User not found');
+    }
     const result = yield user_model_1.Users.deleteOne({ userId: id });
     return result;
 });
 const updateUserFromDB = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.Users.updateOne({ userId: id }, { $set: updateData });
+    const result = yield user_model_1.Users.updateOne({ userId: id }, { isActive: 'inactive' });
     return result;
 });
 const addOrderToDB = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {

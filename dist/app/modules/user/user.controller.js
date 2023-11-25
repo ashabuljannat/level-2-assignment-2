@@ -64,11 +64,23 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const { userId } = req.params;
         const result = yield user_service_1.UserServices.getSingleUserFromDB(userId);
-        res.status(200).json({
-            success: true,
-            message: 'User fetched successfully!',
-            data: result,
-        });
+        if (result) {
+            res.status(200).json({
+                success: true,
+                message: `User id ${userId} fetched successfully!`,
+                data: result,
+            });
+        }
+        else {
+            res.status(500).json({
+                success: false,
+                message: `User id ${userId} not found`,
+                error: {
+                    code: 404,
+                    description: 'User not found!',
+                },
+            });
+        }
     }
     catch (err) {
         res.status(500).json({
@@ -82,11 +94,23 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { userId } = req.params;
         const result = yield user_service_1.UserServices.deleteUserFromDB(userId);
-        res.status(200).json({
-            success: true,
-            message: 'User deleted successfully!',
-            data: { deletedCount: result.deletedCount },
-        });
+        if (result.deletedCount === 0) {
+            res.status(500).json({
+                success: false,
+                message: `User id ${userId} not found`,
+                error: {
+                    code: 404,
+                    description: 'User not found!',
+                },
+            });
+        }
+        else {
+            res.status(200).json({
+                success: true,
+                message: `User id ${userId} deleted successfully!`,
+                data: { deletedCount: result.deletedCount },
+            });
+        }
     }
     catch (err) {
         res.status(500).json({
@@ -99,11 +123,11 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
-        const { updateData } = req.body;
-        const result = yield user_service_1.UserServices.updateUserFromDB(userId, updateData);
+        const { orders } = req.body;
+        const result = yield user_service_1.UserServices.updateUserFromDB(userId, orders);
         res.status(200).json({
             success: true,
-            message: 'User updated successfully!',
+            message: `User id ${userId} updated successfully!`,
             data: result,
         });
     }
