@@ -50,8 +50,19 @@ const deleteUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () 
     return result;
 });
 const updateUserFromDB = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!user_model_1.Users.isUserNotExists(id)) {
+        throw new Error('User not found');
+    }
     const result = yield user_model_1.Users.updateOne({ userId: id }, { isActive: 'inactive' });
-    return result;
+    if (result.matchedCount === 1) {
+        if (result.modifiedCount === 1) {
+            return 'update';
+        }
+        else
+            return '';
+    }
+    else
+        return 'userNot';
 });
 const addOrderToDB = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.Users.updateOne({ userId: id }, 

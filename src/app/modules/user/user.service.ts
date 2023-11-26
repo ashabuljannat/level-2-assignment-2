@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */       // console.log(result);
 import { Order } from './user.interface';
 import { Users } from './user.model';
 
@@ -17,11 +17,7 @@ const createUserIntoDB = async (userData: any) => {
 const getAllUsersFromDB = async () => {
   const result = await Users.find(
     {},
-    { username: 1, fullName: 1, email: 1, age: 1, address: 1 },
-    // if (!user) {
-    //   console.log('User not found');
-    //   return;
-    // }
+    { username: 1, fullName: 1, email: 1, age: 1, address: 1 }
   );
   // ).select('-password');
   return result;
@@ -33,7 +29,7 @@ const getSingleUserFromDB = async (id: any) => {
   }
   const result = await Users.findOne({ userId: id });
   return result;
-};
+};  
 
 const deleteUserFromDB = async (id: any) => {
   if (!Users.isUserNotExists(id)) {
@@ -43,12 +39,20 @@ const deleteUserFromDB = async (id: any) => {
   return result;
 };
 
-const updateUserFromDB = async (id: string, updateData: any) => {
+const updateUserFromDB = async (id: any, updateData: any) => {
+  if (!Users.isUserNotExists(id)) {
+    throw new Error('User not found');
+  }
   const result = await Users.updateOne(
     { userId: id },
     { isActive: 'inactive' },
   );
-  return result;
+
+  if (result.matchedCount === 1) {
+    if (result.modifiedCount === 1) {
+      return 'update';
+    } else return '';
+  } else return 'userNot';
 };
 
 const addOrderToDB = async (id: string, updateData: Order) => {
@@ -57,7 +61,7 @@ const addOrderToDB = async (id: string, updateData: Order) => {
     // { $set: { orders: updateData } },
     { $push: { orders: updateData } },
   );
-  
+
   if (result.modifiedCount === 1) {
     return result;
   } else return null;

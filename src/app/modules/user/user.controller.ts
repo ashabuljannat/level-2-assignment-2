@@ -9,14 +9,6 @@ const createUser = async (req: Request, res: Response) => {
     const zodParsedData = userJoiValidationSchema.parse(user);
 
     const result = await UserServices.createUserIntoDB(zodParsedData);
-    // if (error) {
-    //   res.status(500).json({
-    //     success: false,
-    //     message: error.message || 'something went wrong',
-    //     message2: error.message || 'something went wrong',
-    //     error: error.details,
-    //   });
-    // }
 
     res.status(200).json({
       success: true,
@@ -27,7 +19,6 @@ const createUser = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: err.message || 'something went wrong',
-      // message2: err.message || 'something went wrong',
       error: err,
     });
   }
@@ -95,7 +86,7 @@ const deleteUser = async (req: Request, res: Response) => {
           description: 'User not found!',
         },
       });
-    } else {
+    } else { 
       res.status(200).json({
         success: true,
         message: `User id ${userId} deleted successfully!`,
@@ -117,11 +108,30 @@ const updateUser = async (req: Request, res: Response) => {
     const { orders } = req.body;
     const result = await UserServices.updateUserFromDB(userId, orders);
 
-    res.status(200).json({
-      success: true,
-      message: `User id ${userId} updated successfully!`,
-      data: result,
-    });
+    if (result === 'userNot') {
+      res.status(500).json({
+        success: false,
+        message: `User id ${userId} not found`,
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    } else {
+      if (result === 'update') {
+        res.status(200).json({
+          success: true,
+          message: `User id ${userId} updated successfully!`,
+          data: { modifiedCount: 1 },
+        });
+      } else {
+        res.status(200).json({
+          success: false,
+          message: `you enter same data to User id ${userId}`,
+          data: { modifiedCount: 0 },
+        });
+      }
+    }
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -149,7 +159,7 @@ const addNewOrder = async (req: Request, res: Response) => {
     } else {
       res.status(200).json({
         success: true,
-        message: `Order created successfully for User id ${userId} fetched successfully!`,
+        message: `Order created successfully for User id ${userId}`,
         data: { modifiedCount: result.modifiedCount },
       });
     }
