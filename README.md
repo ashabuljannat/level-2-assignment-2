@@ -12,7 +12,7 @@
 
 - Share the GitHub repository link and the live deployment link as part of your submission.
   - repo link : https://github.com/ashabuljannat/level-2-assignment-2/tree/main 
-  - server live link : https://github.com/ashabuljannat/level-2-assignment-2/tree/main 
+  - server live link : https://long-gray-goose-veil.cyclic.app/api/users/
 - Include a README file with clear instructions on how to run the application locally.
 
 ## Instruction form me
