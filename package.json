@@ -2,7 +2,7 @@
   "name": "assignment-2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/server.js",
   "scripts": {
     "start:nodemon": "nodemon ./dist/server.js",
     "start:node": "node ./dist/server.js",
