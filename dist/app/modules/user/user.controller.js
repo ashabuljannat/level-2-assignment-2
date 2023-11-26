@@ -219,7 +219,6 @@ const getAllOrdersPrice = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         const { userId } = req.params;
         const result = yield user_service_1.UserServices.getOrdersPriceFromDB(userId);
-        const totalCost = calculateTotalCost(result);
         if (result === null) {
             res.status(500).json({
                 success: false,
@@ -231,6 +230,7 @@ const getAllOrdersPrice = (req, res) => __awaiter(void 0, void 0, void 0, functi
             });
         }
         else {
+            const totalCost = calculateTotalCost(result);
             res.status(200).json({
                 success: true,
                 message: `Total price calculated successfully of Order User id ${userId}`,

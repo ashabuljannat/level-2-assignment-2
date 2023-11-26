@@ -86,7 +86,7 @@ const deleteUser = async (req: Request, res: Response) => {
           description: 'User not found!',
         },
       });
-    } else { 
+    } else {
       res.status(200).json({
         success: true,
         message: `User id ${userId} deleted successfully!`,
@@ -212,7 +212,6 @@ const getAllOrdersPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const result = await UserServices.getOrdersPriceFromDB(userId);
-    const totalCost = calculateTotalCost(result);
 
     if (result === null) {
       res.status(500).json({
@@ -224,6 +223,7 @@ const getAllOrdersPrice = async (req: Request, res: Response) => {
         },
       });
     } else {
+      const totalCost = calculateTotalCost(result);
       res.status(200).json({
         success: true,
         message: `Total price calculated successfully of Order User id ${userId}`,

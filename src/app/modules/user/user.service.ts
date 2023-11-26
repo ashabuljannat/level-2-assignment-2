@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */       // console.log(result);
+/* eslint-disable @typescript-eslint/no-explicit-any */ // console.log(result); console.log(11, result);
 import { Order } from './user.interface';
 import { Users } from './user.model';
 
@@ -17,7 +17,7 @@ const createUserIntoDB = async (userData: any) => {
 const getAllUsersFromDB = async () => {
   const result = await Users.find(
     {},
-    { username: 1, fullName: 1, email: 1, age: 1, address: 1 }
+    { username: 1, fullName: 1, email: 1, age: 1, address: 1 },
   );
   // ).select('-password');
   return result;
@@ -29,7 +29,7 @@ const getSingleUserFromDB = async (id: any) => {
   }
   const result = await Users.findOne({ userId: id });
   return result;
-};  
+};
 
 const deleteUserFromDB = async (id: any) => {
   if (!Users.isUserNotExists(id)) {
@@ -78,12 +78,15 @@ const getAllOrdersFromDB = async (id: any) => {
   } else return null;
 };
 
-const getOrdersPriceFromDB = async (id: string) => {
+const getOrdersPriceFromDB = async (id: any) => {
+  if (!Users.isUserNotExists(id)) {
+    throw new Error('User not found');
+  }
   const result = await Users.findOne({ userId: id }, { orders: 1 });
 
-  if (result) {
-    return result.orders;
-  } else return null;
+  if (result === null) {
+    return null;
+  } else  return result.orders;
 };
 
 export const UserServices = {
