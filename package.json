@@ -2,8 +2,8 @@
   "name": "assignment-2",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/server.js",
   "scripts": {
+    "start": "nodemon ./dist/server.js",
     "start:nodemon": "nodemon ./dist/server.js",
     "start:node": "node ./dist/server.js",
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
