@@ -10,176 +10,178 @@
 - Endpoint: **POST /api/users**
 
 - Request Body:
+
 ```json
 {
-    "userId": 1,
-    "username": "jhon doe",
-    "password": "38fn39egbcmke0rhck",
-    "fullName": {
-        "firstName": "Jhon",
-        "lastName": "doe"
+  "userId": 1,
+  "username": "jhon doe",
+  "password": "38fn39egbcmke0rhck",
+  "fullName": {
+    "firstName": "Jhon",
+    "lastName": "doe"
+  },
+  "age": 40,
+  "email": "jhondoe@gmail.com",
+  "isActive": "active",
+  "hobbies": ["study", "tour"],
+  "address": {
+    "street": "bonani",
+    "city": "dhaka",
+    "country": "bangladesh"
+  },
+  "orders": [
+    {
+      "productName": "pc",
+      "price": 500,
+      "quantity": 2
     },
-    "age": 40,
-    "email": "jhondoe@gmail.com",
-    "isActive": "active",
-    "hobbies": [
-        "study",
-        "tour"
-    ],
-    "address": {
-        "street": "bonani",
-        "city": "dhaka",
-        "country": "bangladesh"
-    },
-     "orders": [
-            {
-                "productName": "pc",
-                "price": 500,
-                "quantity": 2
-            },
-            {
-                "productName": "camera",
-                "price": 300,
-                "quantity": 5
-            }
-        ]
-}
-```
-- Response: created user object data. with no password field
-```json
-{
-    "success": true,
-    "message": "User created successfully!",
-    "data": {
-        "userId": "number",
-        "username": "string",
-        "fullName": {
-            "firstName": "string",
-            "lastName": "string"
-        },
-        "age": "number",
-        "email": "string",
-        "isActive": "boolean",
-        "hobbies": [
-            "string",
-            "string"
-        ],
-        "address": {
-            "street": "string",
-            "city": "string",
-            "country": "string"
-        },
-         "orders": [
-            {
-                "productName": "Product 1",
-                "price": 23.56,
-                "quantity": 2
-            },
-            {
-                "productName": "Product 2",
-                "price": 23.56,
-                "quantity": 5
-            }
-        ]
+    {
+      "productName": "camera",
+      "price": 300,
+      "quantity": 5
     }
+  ]
 }
 ```
-- Response: if userId exixt then show error
+
+- Response: created user object data. with no password field
+
+```json
+{
+  "success": true,
+  "message": "User created successfully!",
+  "data": {
+    "userId": "number",
+    "username": "string",
+    "fullName": {
+      "firstName": "string",
+      "lastName": "string"
+    },
+    "age": "number",
+    "email": "string",
+    "isActive": "boolean",
+    "hobbies": ["string", "string"],
+    "address": {
+      "street": "string",
+      "city": "string",
+      "country": "string"
+    },
+    "orders": [
+      {
+        "productName": "Product 1",
+        "price": 23.56,
+        "quantity": 2
+      },
+      {
+        "productName": "Product 2",
+        "price": 23.56,
+        "quantity": 5
+      }
+    ]
+  }
+}
+```
+
+- Response: if userId exist then show error
+
 ```
  throw new Error('User already exists!');
 ```
 
+### Instruction ![#00b48a](https://via.placeholder.com/20/00b48a?text=+)
 
- ### Instruction  ![#00b48a](https://via.placeholder.com/20/00b48a?text=+)
-- for hiding password field i use `select: false` in user model 
-- also use destucture for get nessesery data
-
+- for hiding password field i use `select: false` in user model
+- also use destructure for get necessary data
 
 ### 2. Retrieve a list of all users
 
 - Endpoint: **GET /api/users**
 - Response: List of users objects. Each object only contain `username`, `fullName`, `age`, `email`, `address`
+
 ```json
 {
-    "success": true,
-    "message": "Users fetched successfully!",
-    "data": [
-        {
-            "username": "string",
-            "fullName": {
-                "firstName": "string",
-                "lastName": "string"
-            },
-            "age": "number",
-            "email": "string",
-            "address": {
-                "street": "string",
-                "city": "string",
-                "country": "string"
-            }
-        }
-    ]
+  "success": true,
+  "message": "Users fetched successfully!",
+  "data": [
+    {
+      "username": "string",
+      "fullName": {
+        "firstName": "string",
+        "lastName": "string"
+      },
+      "age": "number",
+      "email": "string",
+      "address": {
+        "street": "string",
+        "city": "string",
+        "country": "string"
+      }
+    }
+  ]
 }
 ```
- ### Instruction  ![#00b48a](https://via.placeholder.com/20/00b48a?text=+)
-- for hiding password field i use `find().select('-password');` in find query 
-- also use destucture for get nessesery data
+
+### Instruction ![#00b48a](https://via.placeholder.com/20/00b48a?text=+)
+
+- for hiding password field i use `find().select('-password');` in find query
+- also use destructure for get necessary data
 
 ### 3. Retrieve a specific user by ID
 
 - Endpoint: **GET /api/users/:userId**
 
 - Response: data of specific user objects.User object and the password field is not included in the response data.
+
 ```json
 {
-    "success": true,
-    "message": "User fetched successfully!",
-    "data": {
-        "userId": "number",
-        "username": "string",
-        "fullName": {
-            "firstName": "string",
-            "lastName": "string"
-        },
-        "age": "number",
-        "email": "string",
-        "isActive": "boolean",
-        "hobbies": [
-            "string",
-            "string"
-        ],
-        "address": {
-            "street": "string",
-            "city": "string",
-            "country": "string"
-        },
-        "orders": [
-            {
-                "productName": "Product 1",
-                "price": 23.56,
-                "quantity": 2
-            },
-            {
-                "productName": "Product 2",
-                "price": 23.56,
-                "quantity": 5
-            }
-        ]
-    }
+  "success": true,
+  "message": "User fetched successfully!",
+  "data": {
+    "userId": "number",
+    "username": "string",
+    "fullName": {
+      "firstName": "string",
+      "lastName": "string"
+    },
+    "age": "number",
+    "email": "string",
+    "isActive": "boolean",
+    "hobbies": ["string", "string"],
+    "address": {
+      "street": "string",
+      "city": "string",
+      "country": "string"
+    },
+    "orders": [
+      {
+        "productName": "Product 1",
+        "price": 23.56,
+        "quantity": 2
+      },
+      {
+        "productName": "Product 2",
+        "price": 23.56,
+        "quantity": 5
+      }
+    ]
+  }
 }
 ```
-- Response: if userId not exixt then show error
+
+- Response: if userId not exist then show error
+
 ```
  throw new Error('User not found!');
 ```
+
 ```json
 {
-    success: false,
-    message: `User id ${userId} not found`,
-    error: {
-        code: 404,
-        description: 'User not found!',
-    },
+  "success": false,
+  "message": "User id ${userId} not found",
+  "error": {
+    "code": 404,
+    "description": "User not found!"
+  }
 }
 ```
 
@@ -190,30 +192,39 @@
 - Request Body: Updated user data (similar structure as in user creation).
 
 - Response: if data updated
+
 ```json
 {
-    success: true,
-    message: `User id ${userId} updated successfully!`,
-    data: { modifiedCount: 1 }    
+  "success": true,
+  "message": "User id ${userId} updated successfully!",
+  "data": {
+    "modifiedCount": 1
+  }
 }
 ```
+
 - Response: if data not to be updated
+
 ```json
 {
-    success: false,
-    message: `you enter same data to User id ${userId}`,
-    data: { modifiedCount: 0 }, 
+  "success": false,
+  "message": "you enter same data to User id ${userId}",
+  "data": {
+    "modifiedCount": 0
+  }
 }
 ```
-- Response: if user not exixt
+
+- Response: if user not exist
+
 ```json
 {
-    success: false,
-    message: `User id ${userId} not found`,
-    error: {
-        code: 404,
-        description: 'User not found!',
-    },
+  "success": false,
+  "message": "User id ${userId} not found",
+  "error": {
+    "code": 404,
+    "description": "User not found!"
+  }
 }
 ```
 
@@ -222,22 +233,25 @@
 - Endpoint: **DELETE /api/users/:userId**
 
 - Response: if user exixt
+
 ```json
 {
-	"success": true,
-	"message": "User id 10 deleted successfully!",
-	"data" :  { deletedCount: 1 },
+  "success": true,
+  "message": "User id 10 deleted successfully!",
+  "data": { "deletedCount": 1 }
 }
 ```
+
 - Response: if user not exixt
+
 ```json
 {
-    success: false,
-    message: `User id ${userId} not found`,
-    error: {
-        code: 404,
-        description: 'User not found!',
-    },
+  "success": false,
+  "message": "User id ${userId} not found",
+  "error": {
+    "code": 404,
+    "description": "User not found!"
+  }
 }
 ```
 
@@ -248,32 +262,37 @@
 - Endpoint: **PUT /api/users/:userId/orders**
 
 - Request Body:
+
 ```json
 {
-    "productName": "string",
-    "price": "number",
-    "quantity": "number"
+  "productName": "string",
+  "price": "number",
+  "quantity": "number"
 }
 ```
 
-- Response: 
+- Response:
+
 ```json
 {
-    success: true,
-    message: `Order created successfully for User id ${userId}`,
-    data: { modifiedCount: 1 },
+  "success": true,
+  "message": "Order created successfully for User id ${userId} ",
+  "data": {
+    "modifiedCount": 1
+  }
 }
 ```
 
 - Response: if user not exixt
+
 ```json
 {
-    success: false,
-    message: `User id ${userId} not found`,
-    error: {
-        code: 404,
-        description: 'User not found!',
-    },
+  "success": false,
+  "message": "User id ${userId} not found",
+  "error": {
+    "code": 404,
+    "description": "User not found!"
+  }
 }
 ```
 
@@ -281,7 +300,8 @@
 
 - Endpoint: **GET /api/users/:userId/orders**
 
-- Response: 
+- Response:
+
 ```json
 {
   "success": true,
@@ -299,15 +319,17 @@
   }
 }
 ```
+
 - Response: if user not exixt
+
 ```json
 {
-    success: false,
-    message: `User id ${userId} not found`,
-    error: {
-        code: 404,
-        description: 'User not found!',
-    },
+  "success": false,
+  "message": "User id ${userId} not found",
+  "error": {
+    "code": 404,
+    "description": "User not found!"
+  }
 }
 ```
 
@@ -316,23 +338,26 @@
 - Endpoint: **GET /api/users/:userId/orders/total-price**
 
 - Response:
+
 ```json
 {
-    "success": true,
-    "message": "Total price calculated successfully!",
-    "data": {
-        "totalPrice": 454.32
-    }
+  "success": true,
+  "message": "Total price calculated successfully!",
+  "data": {
+    "totalPrice": 454.32
+  }
 }
 ```
+
 - Response: if user not exixt
+
 ```json
 {
-    success: false,
-    message: `User id ${userId} not found`,
-    error: {
-        code: 404,
-        description: 'User not found!',
-    },
+  "success": false,
+  "message": "User id ${userId} not found",
+  "error": {
+    "code": 404,
+    "description": "User not found!"
+  }
 }
 ```
