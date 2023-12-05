@@ -32,6 +32,7 @@ export type User = {
 };
 
 export interface UserModel extends Model<User> {
-  isUserExists(userId: number): Promise<User | null>;
+  isUserExistsById(userId: number): Promise<User | null>;
+  isUserExistsByUsername(username: string): Promise<User | null>;
   isUserNotExists(userId: number): Promise<User | null>;
 }

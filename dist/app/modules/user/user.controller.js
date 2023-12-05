@@ -17,8 +17,8 @@ const user_service_1 = require("./user.service");
 const user_validation_zod_1 = __importDefault(require("./user.validation.zod"));
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { user } = req.body;
-        const zodParsedData = user_validation_zod_1.default.parse(user);
+        const userData = req.body;
+        const zodParsedData = user_validation_zod_1.default.parse(userData);
         const result = yield user_service_1.UserServices.createUserIntoDB(zodParsedData);
         res.status(200).json({
             success: true,
@@ -114,8 +114,8 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
-        const { orders } = req.body;
-        const result = yield user_service_1.UserServices.updateUserFromDB(userId, orders);
+        const updateData = req.body;
+        const result = yield user_service_1.UserServices.updateUserFromDB(userId, updateData);
         if (result === 'userNot') {
             res.status(500).json({
                 success: false,

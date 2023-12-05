@@ -369,7 +369,7 @@
 
 ## **Submission:**
 
-- Share the GitHub repository link and the live deployment link as part of your        submission.
+- Share the GitHub repository link and the live deployment link as part of your submission.
 - Include a README file with clear instructions on how to run the application locally.
 
 ## Instruction form me

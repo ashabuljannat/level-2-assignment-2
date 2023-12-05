@@ -19,8 +19,7 @@ const userFullNameSchema = z.object({
 const userNameSchema = z
   .string()
   .trim()
-  .max(10, { message: 'user Name must upto 10 letter and lowercase letters' })
-  .regex(/^[a-z]*$/);
+  .max(10, { message: 'user Name must upto 10 letter and lowercase letters' });
 
 const addressSchema = z.object({
   street: z.string(),

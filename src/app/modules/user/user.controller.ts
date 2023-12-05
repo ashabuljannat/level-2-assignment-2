@@ -5,9 +5,8 @@ import userJoiValidationSchema from './user.validation.zod';
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const { user } = req.body;
-    const zodParsedData = userJoiValidationSchema.parse(user);
-
+    const userData = req.body;
+    const zodParsedData = userJoiValidationSchema.parse(userData);
     const result = await UserServices.createUserIntoDB(zodParsedData);
 
     res.status(200).json({
@@ -105,8 +104,8 @@ const deleteUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { orders } = req.body;
-    const result = await UserServices.updateUserFromDB(userId, orders);
+    const updateData = req.body;
+    const result = await UserServices.updateUserFromDB(userId, updateData);
 
     if (result === 'userNot') {
       res.status(500).json({

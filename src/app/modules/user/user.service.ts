@@ -5,9 +5,12 @@ import { Order } from './user.interface';
 import { Users } from './user.model';
 
 const createUserIntoDB = async (userData: any) => {
-  if (await Users.isUserExists(userData.userId)) {
-    throw new Error('User already exists!');
+  if (await Users.isUserExistsById(userData.userId)) {
+    throw new Error('User id already exists!');
+  } else if (await Users.isUserExistsByUsername(userData.username)) {
+    throw new Error('Username already exists!');
   }
+
   const result: any = await Users.create(userData);
   const { password, _id, __v, ...userDataWithoutPassword } = result._doc;
 
@@ -43,11 +46,8 @@ const updateUserFromDB = async (id: any, updateData: any) => {
   if (!Users.isUserNotExists(id)) {
     throw new Error('User not found');
   }
-  const result = await Users.updateOne(
-    { userId: id },
-    { isActive: 'inactive' },
-  );
-
+  const result = await Users.updateOne({ userId: id }, updateData);
+  console.log(result);
   if (result.matchedCount === 1) {
     if (result.modifiedCount === 1) {
       return 'update';
@@ -86,7 +86,7 @@ const getOrdersPriceFromDB = async (id: any) => {
 
   if (result === null) {
     return null;
-  } else  return result.orders;
+  } else return result.orders;
 };
 
 export const UserServices = {

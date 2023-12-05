@@ -23,8 +23,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
 const user_model_1 = require("./user.model");
 const createUserIntoDB = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    if (yield user_model_1.Users.isUserExists(userData.userId)) {
-        throw new Error('User already exists!');
+    if (yield user_model_1.Users.isUserExistsById(userData.userId)) {
+        throw new Error('User id already exists!');
+    }
+    else if (yield user_model_1.Users.isUserExistsByUsername(userData.username)) {
+        throw new Error('Username already exists!');
     }
     const result = yield user_model_1.Users.create(userData);
     const _a = result._doc, { password, _id, __v } = _a, userDataWithoutPassword = __rest(_a, ["password", "_id", "__v"]);
@@ -53,7 +56,8 @@ const updateUserFromDB = (id, updateData) => __awaiter(void 0, void 0, void 0, f
     if (!user_model_1.Users.isUserNotExists(id)) {
         throw new Error('User not found');
     }
-    const result = yield user_model_1.Users.updateOne({ userId: id }, { isActive: 'inactive' });
+    const result = yield user_model_1.Users.updateOne({ userId: id }, updateData);
+    console.log(result);
     if (result.matchedCount === 1) {
         if (result.modifiedCount === 1) {
             return 'update';
